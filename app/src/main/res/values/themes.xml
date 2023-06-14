@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+
+    <style name="Theme.WeatherAppS" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#1B3B5A</item>
+    </style>
+
+</resources>

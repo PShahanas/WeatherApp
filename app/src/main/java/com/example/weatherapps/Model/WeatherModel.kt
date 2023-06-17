@@ -1,6 +1,6 @@
 package com.example.weatherapps.Model
 
-data class WeatherModel(
+/*data class WeatherModel(
     val base: String,
     val clouds: Clouds,
     val cod: Int,
@@ -60,4 +60,4 @@ data class WeatherModel(
         val gust: Double,
         val speed: Double
     )
-}
+}*/

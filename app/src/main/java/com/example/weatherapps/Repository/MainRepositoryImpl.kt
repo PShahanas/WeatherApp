@@ -4,7 +4,7 @@ package com.example.weatherapps.Repository
 import com.example.weatherapps.Location.LocationService
 import javax.inject.Inject
 
-/*class MainRepositoryImpl @Inject constructor(private val apiHelper: ApiHelper) {
+/*class MainRepositoryImpl @Inject constructor (private val apiHelper: ApiHelper) {
 
     val currentLat = LocationService.currentLatitude
     val currentLon = LocationService.currentLongitude

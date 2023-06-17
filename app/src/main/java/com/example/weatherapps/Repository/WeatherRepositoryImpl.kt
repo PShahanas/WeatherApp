@@ -5,10 +5,13 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.weatherapps.API.APIinterface
-import com.example.weatherapps.API.ApiUtilities
 //import com.example.weatherapps.API.ApiUtilities
 //import com.example.weatherapps.API.ApiUtilities
-import com.example.weatherapps.Model.WeatherModel
+//import com.example.weatherapps.API.ApiUtilities
+//import com.example.weatherapps.Model.WeatherModel
+import com.example.weatherapps.Model.toWeatherInfo
+import com.example.weatherapps.ui.Weather.WeatherInfo
+import com.example.weatherapps.utils.Resource
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -16,72 +19,23 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-/*class WeatherRepositoryImpl @Inject constructor() : WeatherRepository {
+class WeatherRepositoryImpl  @Inject constructor (private val api:APIinterface) : WeatherRepository{
+    override suspend fun getWeatherData(lat: Double, lon: Double): Resource<WeatherInfo> {
+        return try{
 
-    private val apiKey = "f70ca239bf30695349b25a9bb3361c69"
+            Log.e("Response", api.getWeatherData(lat = lat, long = lon).weatherData.toString())
 
-    override suspend fun getWeatherData(lat: Double, lon: Double): WeatherModel? {
+           Resource.Success(
 
-        val serviceSetterGetter = MutableLiveData<WeatherModel>()
-
-        val call = ApiUtilities.getApiInterface()?.getCurrentWeather(lat, lon, apiKey)
-
-        if (call != null) {
-            call.enqueue(object : Callback<WeatherModel> {
-                override fun onResponse(
-                    call: Call<WeatherModel>,
-                    response: Response<WeatherModel>
-                ) {
-                    //val data = response.body()
-
-                    serviceSetterGetter.value = response.body()
-                }
-
-                override fun onFailure(call: Call<WeatherModel>, t: Throwable) {
-
-                    Log.e("API CALL", "Error")
-
-                }
-
-            })
-
+               data = api.getWeatherData(
+                   lat = lat,
+                   long = lon
+               ).toWeatherInfo()
+           )
+        } catch(e: Exception) {
+            e.printStackTrace()
+            Resource.Error(e.message ?: "An unknown error occurred.")
         }
-
-        return serviceSetterGetter.value
     }
+
 }
-
-
-
-
-
-
-
-        /*  try {
-            ApiUtilities.getApiInterface()?.getCurrentWeather(lat, lon, appID = apiKey )?.enqueue(
-                object : Callback<WeatherModel> {
-                    override fun onResponse(
-                        call: Call<WeatherModel>,
-                        response: Response<WeatherModel>
-                    ) {
-                        GlobalScope.launch {
-                            val data = api.getCurrentWeather(lat, lon, apiKey)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<WeatherModel>, t: Throwable) {
-                        //TODO("Not yet implemented")
-                    }
-
-                }
-            )
-        }catch (e: Exception){
-              e.printStackTrace()
-              Log.e("API Calling", "ERROR")
-        }*/
-
-
-
-
-
-*/

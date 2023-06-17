@@ -1,174 +1,101 @@
 package com.example.weatherapps.ui
+import android.annotation.SuppressLint
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.googlefonts.GoogleFont
-//import androidx.compose.ui.tooling.data.EmptyGroup.data
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weatherapps.R
-import com.plcoding.weatherapp.presentation.ui.theme.DeepBlue
+import com.example.weatherapps.ViewModels.weatherViewModel
+import com.example.weatherapps.ui.Weather.WeatherState
+import java.time.format.DateTimeFormatter
 
-private object textDownloadablefont {
 
-    val provider = GoogleFont.Provider(
-        providerAuthority = "com.google.android.gms.fonts",
-        providerPackage = "com.google.android.gms",
-        certificates = R.array.com_google_android_gms_fonts_certs
-    )
-}
+//val apiKey = "f70ca239bf30695349b25a9bb3361c69"
 
-val fontName = GoogleFont("Lobster Two")
+//val LocalData = compositionLocalOf<String> { error("No data provided") }
 
-//val fontFamily = FontFamily(
-//    Font(googleFont = fontName, fontProvider = provider),weight = FontWeight.Bold,
-//        style = FontStyle.Italic
-//)
-
+@SuppressLint("RememberReturnType")
 @Composable
 fun Weathercard(
-    modifier: Modifier = Modifier
-    //temp: Double? = MainActivity.temp
-
+    modifier: Modifier = Modifier,
+    state: WeatherState,
+    backgroundColor: Color
 )
 {
-    /*mainActivity.let {
-        if (it != null) {
-            it.sendData(it)
-        }
-    }*/
-   // var temp by remember{ mutableStateOf("${MainActivity.temp} ") }
-    val context = LocalContext.current
-   Card(
-      shape = RoundedCornerShape(10.dp),
-      modifier = modifier
-          .padding(10.dp)
-   ) {
+    state.weatherInfo?.currentWeatherData?.let { data ->
 
-        Box(
-           modifier = Modifier
-               .fillMaxSize()
-               .background(DeepBlue)
-        ) {
+            Card(
+                backgroundColor = backgroundColor,
+                shape = RoundedCornerShape(10.dp),
+                modifier = modifier.padding(16.dp)
+            ) {
 
-            Text(
-                text = "Time",
-                fontSize = 20.sp,
-                color = Color.White,
+            Column(
                 modifier = Modifier
-                    .align(alignment = Alignment.TopEnd)
-                    .padding(20.dp)
-            )
-
-            Image(
-                painter = painterResource(id = R.drawable.ic_broken_clouds),
-                contentDescription = "",
-                modifier = Modifier
-                    .width(300.dp)
-                    .height(300.dp)
-                    .align(alignment = Alignment.Center)
-                    .padding(bottom = 150.dp)
-            )
-
-            Text(
-                text = "26.8 C",
-                fontSize = 30.sp,
-                color = Color.White,
-                modifier = Modifier
-                    .align(alignment = Alignment.Center)
-                    .padding(top = 15.dp)
-
-            )
-
-            Row(modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(start = 48.dp, bottom = 60.dp)) {
-
-                Text(text = "1011", color = Color.White)
-                Spacer(modifier = Modifier.width(2.dp))
-                Text(text = "hpa", color = Color.White)
-
-                Spacer(modifier = Modifier.width(55.dp))
-
-                Text(text = "88", color = Color.White)
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(text = "%", color = Color.White)
-
-                Spacer(modifier = Modifier.width(50.dp))
-
-                Text(text = "3", color = Color.White)
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(text = "km/h", color = Color.White)
-
-
-            }
-
-            Row(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(start = 50.dp, bottom = 10.dp)
-            ){
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_pressure),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(50.dp)
-                        .padding(bottom = 8.dp),
-                    colorFilter = ColorFilter.tint(Color.White)
-
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Today ${
+                        data.time.format(
+                            DateTimeFormatter.ofPattern("HH:mm")
+                        )
+                    }",
+                    modifier = Modifier.align(Alignment.End),
+                    color = Color.White
                 )
-
-                Spacer(modifier = Modifier.width(59.dp))
-
-                Image(painter = painterResource(id = R.drawable.humidity),
+                Spacer(modifier = Modifier.height(16.dp))
+                Image(
+                    painter = painterResource(id = data.weatherType.iconRes),
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(35.dp)
-                        .padding(top = 3.dp)
-                    ,
-                    colorFilter = ColorFilter.tint(Color.White))
-
-                Spacer(modifier = Modifier.width(53.dp))
-
-                Image(painter = painterResource(id = R.drawable.ic_wind),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(45.dp),
-                    colorFilter = ColorFilter.tint(Color.White))
-
-
-
-
+                    modifier = Modifier.width(200.dp)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "${data.temperatureCelsius}°C",
+                    fontSize = 50.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = data.weatherType.weatherDesc,
+                    fontSize = 20.sp,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(32.dp))
             }
-
-
         }
-   }
+    }
+    }
 
 
-}
 
-@Preview
+
+/*@Preview
 @Composable
 fun WeatherCardPreview(){
+    //private val viewModel: WeatherViewModel by viewModels()
 
+    weatherViewModel?.let {
         Weathercard(
-            modifier = Modifier.background(Color.White)
+            modifier = Modifier.background(Color.White), state = viewModel.state,
         )
+    }
 
 
-}
+}*/
 
 
 

@@ -1,19 +1,16 @@
 package com.example.weatherapps.Location
 
-import android.Manifest
 import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.IBinder
-import android.util.Log
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.example.weatherapps.ViewModels.weatherViewModel
 import com.example.weatherapps.ui.mainActivity
 //import com.example.weatherapps.mainActivity
 //import com.example.weatherapps.ui.mainActivity
 import com.google.android.gms.location.*
-import dagger.hilt.android.AndroidEntryPoint
 
 class LocationService : Service(){
 
@@ -52,7 +49,18 @@ class LocationService : Service(){
                             it.getLocation(locationResult)
                             //it.fetchCurrentLocationWeather(currentLatitude, currentLongitude)
                         }
+
                     }
+                    weatherViewModel.let{
+                        if (it != null) {
+                            it.getLocation(locationResult)
+                            //it.fetchCurrentLocationWeather(currentLatitude, currentLongitude)
+                        }
+
+                    }
+
+
+
 
                 }
 

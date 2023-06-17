@@ -1,6 +1,6 @@
 package com.example.weatherapps.API
 
-import com.example.weatherapps.Model.WeatherModel
+//import com.example.weatherapps.Model.WeatherModel
 import retrofit2.Call
 import retrofit2.Response
 import javax.inject.Inject

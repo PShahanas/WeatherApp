@@ -35,11 +35,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 //import com.example.weatherapps.API.ApiUtilities
 import com.example.weatherapps.Location.LocationService
 //import com.example.weatherapps.Model.WeatherModel
 import com.example.weatherapps.ViewModels.WeatherViewModel
 import com.example.weatherapps.ViewModels.weatherViewModel
+import com.example.weatherapps.ui.Weather.WeatherCardNew
 //import com.example.weatherapps.ViewModels.MainViewModel
 import com.google.android.gms.location.LocationResult
 import com.plcoding.weatherapp.presentation.ui.theme.DarkBlue
@@ -87,6 +89,7 @@ class MainActivity : ComponentActivity() {
 
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -105,6 +108,8 @@ class MainActivity : ComponentActivity() {
                             state = viewModel.state,
                             backgroundColor = DeepBlue
                         )
+
+                       // WeatherCardNew(state = viewModel.state, backgroundColor = DeepBlue)
 
                     }
                     if(viewModel.state.isLoading) {
@@ -271,6 +276,8 @@ class MainActivity : ComponentActivity() {
                                   backgroundColor = DeepBlue
                               )
 
+                              //WeatherCardNew(state = viewModel.state, backgroundColor = DeepBlue)
+
                           }
                           if(viewModel.state.isLoading) {
                               /*CircularProgressIndicator(
@@ -318,9 +325,7 @@ class MainActivity : ComponentActivity() {
 
                         }
                         if(viewModel.state.isLoading) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.align(Alignment.Center)
-                            )
+                            Log.e("Weather : ","Loading....")
                         }
                         viewModel.state.error?.let { error ->
                             Text(

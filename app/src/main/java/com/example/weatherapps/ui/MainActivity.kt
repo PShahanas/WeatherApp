@@ -4,29 +4,22 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -35,24 +28,24 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 //import com.example.weatherapps.API.ApiUtilities
 import com.example.weatherapps.Location.LocationService
+import com.example.weatherapps.ViewModels.SearchViewModel
 //import com.example.weatherapps.Model.WeatherModel
 import com.example.weatherapps.ViewModels.WeatherViewModel
 import com.example.weatherapps.ViewModels.weatherViewModel
-import com.example.weatherapps.ui.Weather.WeatherCardNew
+import com.example.weatherapps.ui.Weather.SearchScreen
+//import com.example.weatherapps.ui.Weather.SearchScreen
+//import com.example.weatherapps.ui.Weather.WeatherCardNew
 //import com.example.weatherapps.ViewModels.MainViewModel
 import com.google.android.gms.location.LocationResult
 import com.plcoding.weatherapp.presentation.ui.theme.DarkBlue
 import com.plcoding.weatherapp.presentation.ui.theme.DeepBlue
 import com.plcoding.weatherapp.presentation.ui.theme.WeatherAppTheme
+import android.content.Context
+import com.example.weatherapps.ui.Weather.WeatherScreen
+import androidx.compose.runtime.compositionLocalOf
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.logging.Logger.global
-import kotlin.properties.Delegates
 
 var mainActivity : MainActivity? = null
 
@@ -61,7 +54,9 @@ var mainActivity : MainActivity? = null
 class MainActivity : ComponentActivity() {
 
     private val viewModel: WeatherViewModel by viewModels()
+    private val viewModelSearch: SearchViewModel by viewModels()
 
+    private val LocalMapOverlayContext = compositionLocalOf<Context> { error("No MapOverlay Context found") }
 
     private lateinit var permissionRequest: ActivityResultLauncher<Array<String>>
 
@@ -92,57 +87,26 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
 
             WeatherAppTheme {
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ){
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(DarkBlue)
-                    ) {
-                        Weathercard(
-                            state = viewModel.state,
-                            backgroundColor = DeepBlue
-                        )
 
-                       // WeatherCardNew(state = viewModel.state, backgroundColor = DeepBlue)
+                    CompositionLocalProvider(LocalMapOverlayContext provides applicationContext) {
+                        WeatherScreen(viewModel, viewModelSearch)
+                    }
 
-                    }
-                    if(viewModel.state.isLoading) {
-                        /*CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )*/
-                        Log.e("Weather : ","Loading.....")
-                    }
-                    viewModel.state.error?.let { error ->
-                        Text(
-                            text = error,
-                            color = Color.Red,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                }
+
+
 
             }
-
         }
-
         requestPermissions()
         mainActivity = this
 
         service = Intent(this, LocationService::class.java)
         if (permissionsEnabled) {
             startService(service)
-
         }
-
-
-
     }
 
 
@@ -182,6 +146,8 @@ class MainActivity : ComponentActivity() {
                                             .fillMaxSize()
                                             .background(DarkBlue)
                                     ) {
+                                        //SearchScreen()
+                                        Spacer(modifier = Modifier.height(10.dp))
                                         Weathercard(
                                             state = viewModel.state,
                                             backgroundColor = DeepBlue
@@ -253,7 +219,6 @@ class MainActivity : ComponentActivity() {
     }
 
 
-
     override fun onRestart() {
         super.onRestart()
 
@@ -263,38 +228,45 @@ class MainActivity : ComponentActivity() {
           setContent{
               Box(modifier = Modifier.fillMaxSize()) {
                   WeatherAppTheme {
-                      Box(
-                          modifier = Modifier.fillMaxSize()
-                      ){
-                          Column(
-                              modifier = Modifier
-                                  .fillMaxSize()
-                                  .background(DarkBlue)
-                          ) {
-                              Weathercard(
-                                  state = viewModel.state,
-                                  backgroundColor = DeepBlue
-                              )
 
-                              //WeatherCardNew(state = viewModel.state, backgroundColor = DeepBlue)
-
-                          }
-                          if(viewModel.state.isLoading) {
-                              /*CircularProgressIndicator(
-                                  modifier = Modifier.align(Alignment.Center)
-                              )*/
-                              Log.e("Weather : ","Loading....")
-                          }
-
-                          viewModel.state.error?.let { error ->
-                              Text(
-                                  text = error,
-                                  color = Color.Red,
-                                  textAlign = TextAlign.Center,
-                                  modifier = Modifier.align(Alignment.Center)
-                              )
-                          }
+                      CompositionLocalProvider(LocalMapOverlayContext provides applicationContext) {
+                          WeatherScreen(viewModel, viewModelSearch)
                       }
+
+                      /* Box(
+                           modifier = Modifier.fillMaxSize()
+                       ){
+                           Column(
+                               modifier = Modifier
+                                   .fillMaxSize()
+                                   .background(DarkBlue)
+                           ) {
+                               //SearchScreen()
+                               Spacer(modifier = Modifier.height(10.dp))
+                               Weathercard(
+                                   state = viewModel.state,
+                                   backgroundColor = DeepBlue
+                               )
+
+                               //WeatherCardNew(state = viewModel.state, backgroundColor = DeepBlue)
+
+                           }
+                           if(viewModel.state.isLoading) {
+                               /*CircularProgressIndicator(
+                                   modifier = Modifier.align(Alignment.Center)
+                               )*/
+                               Log.e("Weather : ","Loading....")
+                           }
+
+                           viewModel.state.error?.let { error ->
+                               Text(
+                                   text = error,
+                                   color = Color.Red,
+                                   textAlign = TextAlign.Center,
+                                   modifier = Modifier.align(Alignment.Center)
+                               )
+                           }
+                       }*/
 
                   }
                   MyDialogUIPreview()
@@ -310,7 +282,12 @@ class MainActivity : ComponentActivity() {
             Toast.makeText(this, "Permission Given", Toast.LENGTH_LONG).show()
             setContent{
                 WeatherAppTheme {
-                    Box(
+
+                    CompositionLocalProvider(LocalMapOverlayContext provides applicationContext) {
+                        WeatherScreen(viewModel, viewModelSearch)
+                    }
+
+                    /*Box(
                         modifier = Modifier.fillMaxSize()
                     ){
                         Column(
@@ -318,6 +295,11 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxSize()
                                 .background(DarkBlue)
                         ) {
+                            weatherViewModel?.let {
+                                SearchScreen(viewModelSearch, suggestions = viewModelSearch.suggestions
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(10.dp))
                             Weathercard(
                                 state = viewModel.state,
                                 backgroundColor = DeepBlue
@@ -335,7 +317,7 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.align(Alignment.Center)
                             )
                         }
-                    }
+                    }*/
 
                 }
                 startService(service)
@@ -345,6 +327,7 @@ class MainActivity : ComponentActivity() {
 
 
     }
+
 
     @Composable
     fun CustomDialogUI(

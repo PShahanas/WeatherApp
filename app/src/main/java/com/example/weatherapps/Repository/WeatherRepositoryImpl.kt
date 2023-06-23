@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import com.example.weatherapps.API.APIinterface
+import com.example.weatherapps.API.FirstAPIImplementation
 //import com.example.weatherapps.API.ApiUtilities
 //import com.example.weatherapps.API.ApiUtilities
 //import com.example.weatherapps.API.ApiUtilities
@@ -19,7 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class WeatherRepositoryImpl  @Inject constructor (private val api:APIinterface) : WeatherRepository{
+class WeatherRepositoryImpl  @Inject constructor (private val api:FirstAPIImplementation) : WeatherRepository{
     override suspend fun getWeatherData(lat: Double, lon: Double): Resource<WeatherInfo> {
         return try{
 

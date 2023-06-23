@@ -1,29 +1,26 @@
 package com.example.weatherapps.ui
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 //import androidx.compose.foundation.layout.R
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.weatherapps.ViewModels.weatherViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.weatherapps.ui.Weather.WeatherState
 import java.time.format.DateTimeFormatter
 import com.example.weatherapps.R
+//import com.example.weatherapps.ViewModels.SearchViewModel
 import com.example.weatherapps.ui.Weather.ColoredImageVector
 
 
@@ -37,17 +34,17 @@ fun Weathercard(
     modifier: Modifier = Modifier,
     state: WeatherState,
     backgroundColor: Color
+) {
 
-)
-{
     state.weatherInfo?.currentWeatherData?.let { data ->
 
-            Card(
-                backgroundColor = backgroundColor,
-                shape = RoundedCornerShape(10.dp),
-                modifier = modifier.padding(16.dp)
-            ) {
-
+        Card(
+            backgroundColor = backgroundColor,
+            shape = RoundedCornerShape(10.dp),
+            modifier = modifier
+                .padding(16.dp)
+                .fillMaxSize()
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -64,10 +61,16 @@ fun Weathercard(
                     color = Color.White
                 )
                 Spacer(modifier = Modifier.height(16.dp))
+
+                Text(text = "Canada", color = Color.White,
+                fontSize = 50.sp)
+
+                Spacer(modifier = Modifier.height(9.dp))
+
                 Image(
                     painter = painterResource(id = data.weatherType.iconRes),
                     contentDescription = null,
-                    modifier = Modifier.width(200.dp)
+                    modifier = Modifier.width(100.dp)
                 )
                 /*Image(
                     painter = painterResource(id = data.weatherType.bgImage),
@@ -90,8 +93,10 @@ fun Weathercard(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Row(
-                    modifier = Modifier.fillMaxWidth()
-                ){
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 6.dp)
+                ) {
 
                     val pressure = ImageVector.vectorResource(id = R.drawable.ic_pressure)
                     ColoredImageVector(
@@ -139,16 +144,100 @@ fun Weathercard(
                     )
 
 
-
                 }
-
+            }
 
             }
         }
     }
+
+
+
+
+/*@Composable
+fun SearchScreen(viewModel: WeatherViewModel) {
+    var query by remember { mutableStateOf("") }
+
+    Row {
+        TextField(
+            value = query,
+            onValueChange = { query = it },
+            label = { Text("Search Address") },
+            modifier = Modifier.padding(16.dp)
+        )
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Button(
+            onClick = { viewModel.searchAddresses(query) }
+        ) {
+            Text("Search")
+        }
+        //Spacer(modifier = Modifier.height(16.dp))
+
+        val searchResults by viewModel.searchResults.observeAsState()
+        if (searchResults != null) {
+            LazyColumn {
+                items(searchResults) { address ->
+                    //Text(address.fullAddress, modifier = Modifier.padding(16.dp))
+                    Text(address.toString(), modifier = Modifier.padding(16.dp))
+                }
+            }
+        }
+    }
+}*/
+
+
+/*@Composable
+fun SearchScreen(viewModel: WeatherViewModel ) {
+    var query by remember { mutableStateOf("")
+        }
+Row(
+    modifier = Modifier
+        .padding(10.dp)
+) {
+    TextField(
+        value = query,
+        onValueChange = { newValue ->
+            query = newValue
+        },
+        modifier = Modifier.weight(1f).padding(end = 8.dp),
+        label = { Text("Search Place", color = Color.White) }
+    )
+
+    Button(onClick = {
+        //viewModel.searchAddresses(query)
+                     Log.i("Button: ","Clicked")
+                     },
+        modifier = Modifier.padding(start = 8.dp)
+        ) {
+
+        Text(text ="Button" )
+
     }
 
+    //Spacer(modifier = Modifier.width(9.dp))
 
+    /*Button(
+        onClick = { viewModel.searchAddresses(query) }
+    ) {
+        Text(text = "Weather")
+    }*/
+}
+
+}*/
+
+/*@Composable
+fun MyButton(onClick: () -> Unit, viewModel: WeatherViewModel) {
+    val query by remember { mutableStateOf("")
+    }
+    Button(
+        onClick = { viewModel.searchAddresses(query) },
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Text(text = "Weather")
+    }
+}*/
 
 
 /*@Preview
@@ -164,6 +253,47 @@ fun WeatherCardPreview(){
 
 
 }*/
+
+/*
+@Composable
+fun SearchScreen(searchViewModel: SearchViewModel = viewModel()) {
+    val places by searchViewModel.places.collectAsState()
+    val selectedPlace by searchViewModel.selectedPlace.collectAsState()
+
+    Column {
+        TextField(
+            value = selectedPlace?.name ?: "",
+            onValueChange = { query ->
+                searchViewModel.searchPlaces(query)
+                searchViewModel.clearSelectedPlace()
+            },
+            label = { Text("Search") }
+        )
+        LazyColumn {
+            items(places) { place ->
+                Text(
+                    text = places.name,
+                    modifier = Modifier
+                        .clickable { searchViewModel.selectPlace(places) }
+                        .padding(16.dp)
+                )
+            }
+        }
+
+        Button(
+            onClick = { searchViewModel.convertToCoordinates() },
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text("Convert to Coordinates")
+        }
+    }
+}
+
+
+*/
+
+
+
 
 
 

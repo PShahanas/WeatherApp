@@ -1,26 +1,27 @@
 package com.example.weatherapps.ViewModels
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+//import com.example.weatherapps.API.Address
 import com.example.weatherapps.Location.LocationService
+//import com.example.weatherapps.Repository.GeoaddressRepository
+//import com.example.weatherapps.Repository.GeocodingService
 import com.example.weatherapps.Repository.WeatherRepository
 //import com.example.weatherapps.Repository.Repository
 import com.example.weatherapps.ui.Weather.WeatherState
-import com.example.weatherapps.ui.mainActivity
 import com.example.weatherapps.utils.Resource
 import com.google.android.gms.location.LocationResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 
 var weatherViewModel : WeatherViewModel? = null
@@ -29,6 +30,8 @@ var weatherViewModel : WeatherViewModel? = null
 @HiltViewModel
 class WeatherViewModel @Inject constructor(
 private val repository: WeatherRepository
+//private val geoaddressrepository: GeoaddressRepository,
+//private val geocodingService: GeocodingService
 //private val locationService:LocationService
 ) : ViewModel() {
 
@@ -46,6 +49,7 @@ private val repository: WeatherRepository
         }
 
         if (locationResult != null) {
+
             for (location in locationResult.locations) {
                 LocationService.currentLatitude = location.latitude
                 LocationService.currentLongitude = location.longitude

@@ -17,6 +17,29 @@ class LocationService : Service(){
    companion object{
        var currentLatitude: Double? = null
        var currentLongitude: Double? = null
+
+       @JvmName("setCurrentLatitude1")
+       fun setCurrentLatitude(latitude: Double?) {
+           currentLatitude = latitude
+       }
+
+       @JvmName("getCurrentLatitude1")
+       fun getCurrentLatitude(): Double? {
+           return currentLatitude
+       }
+
+       @JvmName("setCurrentLongitude1")
+       fun setCurrentLongitude(longitude: Double?) {
+           currentLongitude = longitude
+       }
+
+       @JvmName("getCurrentLongitude1")
+       fun getCurrentLongitude(): Double? {
+           return currentLongitude
+       }
+
+
+
    }
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null

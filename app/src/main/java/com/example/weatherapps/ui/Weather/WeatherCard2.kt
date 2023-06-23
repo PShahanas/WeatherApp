@@ -19,7 +19,7 @@ import com.example.weatherapps.ViewModels.weatherViewModel
 import com.example.weatherapps.ui.Weathercard
 import java.time.format.DateTimeFormatter
 
-@Composable
+/*@Composable
 fun WeatherCardNew(
     modifier: Modifier = Modifier,
     backgroundColor: Color
@@ -75,7 +75,7 @@ fun WeatherCardNew(
     }
 //}
 
-
+*/
 
 /*@Preview
 @Composable

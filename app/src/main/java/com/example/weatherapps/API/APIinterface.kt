@@ -9,24 +9,32 @@ import retrofit2.http.Query
 
 interface APIinterface {
 
-  /*@GET("weather")
-   fun getCurrentWeather(
-      @Query("lat") lat: String,
-      @Query("lon") lon: String,
-      @Query("appID") appID:String
-  ):Call<WeatherModel>
 
-  @GET("weather")
-   fun getCityWeather(
-      @Query("city") city:String,
-      @Query("appID") appID:String
-  ):Call<WeatherModel>*/
+}
+
+interface FirstAPIImplementation : APIinterface {
 
     @GET("v1/forecast?hourly=temperature_2m,weathercode,relativehumidity_2m,windspeed_10m,pressure_msl")
     suspend fun getWeatherData(
         @Query("latitude") lat: Double,
         @Query("longitude") long: Double
     ): ResponseDto
-
-
 }
+    /*@GET("search")
+    suspend fun searchPlaces(@Query("query") query: String): Response<PlacesResponse>
+
+    @GET("geocode")
+    suspend fun getCoordinates(@Query("place") place: String): Response<CoordinatesResponse>*/
+
+
+
+/*interface SecondAPIImplementation : APIinterface{
+
+    @GET("search")
+    suspend fun searchAddresses(
+        @Query("text") query: String,
+        @Query("apiKey") apiKey: String
+    ): Response<List<Address>>
+
+
+}*/

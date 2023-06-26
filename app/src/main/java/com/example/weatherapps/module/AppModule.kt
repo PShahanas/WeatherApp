@@ -57,6 +57,9 @@ object AppModule {
 
         // Initialize Places SDK
         Places.initialize(application, "AIzaSyDJb9Feg4ntB_PpGEwdEAuy3_ZMY83EPbU")
+        //Places.initialize(application, "AIzaSyCFFBYMLn2ezI1Ro-zngvO2eUPm3BhMqT8")
+        //Places.initialize(application, "AIzaSyCYd9DNtP8fAnic_H5XwgCef7dmqj_7vB0")
+        //apikey - 5
 
         // Create and return PlacesClient instance
         return Places.createClient(application)

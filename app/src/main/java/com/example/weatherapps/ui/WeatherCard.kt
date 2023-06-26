@@ -17,6 +17,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.weatherapps.ui.Weather.WeatherState
 import java.time.format.DateTimeFormatter
 import com.example.weatherapps.R
@@ -33,7 +34,8 @@ import com.example.weatherapps.ui.Weather.ColoredImageVector
 fun Weathercard(
     modifier: Modifier = Modifier,
     state: WeatherState,
-    backgroundColor: Color
+    backgroundColor: Color,
+    navController: NavHostController
 ) {
 
     state.weatherInfo?.currentWeatherData?.let { data ->
@@ -63,7 +65,10 @@ fun Weathercard(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(text = "Canada", color = Color.White,
-                fontSize = 50.sp)
+                fontSize = 50.sp,
+                    modifier = Modifier.clickable {
+                        navController.navigate(MainActivity.Screens.Map)
+                    })
 
                 Spacer(modifier = Modifier.height(9.dp))
 

@@ -34,7 +34,6 @@ import com.example.weatherapps.ViewModels.SearchViewModel
 //import com.example.weatherapps.Model.WeatherModel
 import com.example.weatherapps.ViewModels.WeatherViewModel
 import com.example.weatherapps.ViewModels.weatherViewModel
-import com.example.weatherapps.ui.Weather.SearchScreen
 //import com.example.weatherapps.ui.Weather.SearchScreen
 //import com.example.weatherapps.ui.Weather.WeatherCardNew
 //import com.example.weatherapps.ViewModels.MainViewModel
@@ -43,9 +42,20 @@ import com.plcoding.weatherapp.presentation.ui.theme.DarkBlue
 import com.plcoding.weatherapp.presentation.ui.theme.DeepBlue
 import com.plcoding.weatherapp.presentation.ui.theme.WeatherAppTheme
 import android.content.Context
-import com.example.weatherapps.ui.Weather.WeatherScreen
 import androidx.compose.runtime.compositionLocalOf
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.google.android.gms.maps.MapView
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.weatherapps.ViewModels.MapViewModel
+import com.example.weatherapps.ui.Weather.*
+import com.example.weatherapps.ui.Weather.MapScreen
+
 
 var mainActivity : MainActivity? = null
 
@@ -55,6 +65,13 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: WeatherViewModel by viewModels()
     private val viewModelSearch: SearchViewModel by viewModels()
+
+
+    //@Inject
+    //lateinit var mapView: MapView
+
+    @Inject
+    lateinit var navController: NavHostController
 
     private val LocalMapOverlayContext = compositionLocalOf<Context> { error("No MapOverlay Context found") }
 
@@ -77,7 +94,8 @@ class MainActivity : ComponentActivity() {
         weatherViewModel?.let {
             Weathercard(
                 state = viewModel.state,
-                backgroundColor = DeepBlue
+                backgroundColor = DeepBlue,
+                navController = NavHostController(this@MainActivity)
             )
         }
 
@@ -91,14 +109,42 @@ class MainActivity : ComponentActivity() {
 
             WeatherAppTheme {
 
-                    CompositionLocalProvider(LocalMapOverlayContext provides applicationContext) {
+                    /*CompositionLocalProvider(LocalMapOverlayContext provides applicationContext) {
                         WeatherScreen(viewModel, viewModelSearch)
+                    }*/
+
+                /*val navGraph = remember { NavGraph() }
+                CompositionLocalProvider(LocalNavController provides navController) {
+                    NavHost(navController = navController, startDestination = Screens.Home) {
+                        // Define your navigation routes here
+                    }*/
+
+                    val navController = rememberNavController()
+
+                    NavHost(navController = navController, startDestination = Screens.Home) {
+                        // Define your navigation routes here
                     }
+
+                /*MapView(onMapClicked = { latLng ->
+                    val latitude = latLng.latitude
+                    val longitude = latLng.longitude
+                    // Use latitude and longitude as needed
+                })*/
 
 
 
 
             }
+
+           /* MyApplicationTheme {
+                Surface(color = MaterialTheme.colors.background) {
+                    MapView(onMapClicked = { latLng ->
+                        val latitude = latLng.latitude
+                        val longitude = latLng.longitude
+                        // Use latitude and longitude as needed
+                    })
+                }
+            }*/
         }
         requestPermissions()
         mainActivity = this
@@ -108,6 +154,29 @@ class MainActivity : ComponentActivity() {
             startService(service)
         }
     }
+
+    object Screens {
+        const val Map = "map"
+        const val Home = "home"
+    }
+
+    @Composable
+    fun NavGraph(startDestination: String = Screens.Home) {
+        val navController = rememberNavController()
+
+        NavHost(navController = navController, startDestination = startDestination) {
+            composable(Screens.Home) {
+                WeatherScreen(viewModel, viewModelSearch)
+            }
+            composable(Screens.Map) {
+                val mapScreen = hiltViewModel<MapViewModel>()
+                MapScreen(onLocationSelected = { latLng ->
+                    // Handle the selected location (latitude and longitude) here
+                })
+            }
+        }
+    }
+
 
 
 
@@ -150,7 +219,8 @@ class MainActivity : ComponentActivity() {
                                         Spacer(modifier = Modifier.height(10.dp))
                                         Weathercard(
                                             state = viewModel.state,
-                                            backgroundColor = DeepBlue
+                                            backgroundColor = DeepBlue,
+                                            navController = NavHostController(this@MainActivity)
                                         )
 
                                     }
@@ -393,7 +463,8 @@ class MainActivity : ComponentActivity() {
                                     ) {
                                         Weathercard(
                                             state = viewModel.state,
-                                            backgroundColor = DeepBlue
+                                            backgroundColor = DeepBlue,
+                                            navController = NavHostController(this@MainActivity)
                                         )
 
                                     }

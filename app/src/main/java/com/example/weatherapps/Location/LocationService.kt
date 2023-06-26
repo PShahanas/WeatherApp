@@ -18,7 +18,7 @@ class LocationService : Service(){
        var currentLatitude: Double? = null
        var currentLongitude: Double? = null
 
-       @JvmName("setCurrentLatitude1")
+       /*@JvmName("setCurrentLatitude1")
        fun setCurrentLatitude(latitude: Double?) {
            currentLatitude = latitude
        }
@@ -36,7 +36,7 @@ class LocationService : Service(){
        @JvmName("getCurrentLongitude1")
        fun getCurrentLongitude(): Double? {
            return currentLongitude
-       }
+       }*/
 
 
 

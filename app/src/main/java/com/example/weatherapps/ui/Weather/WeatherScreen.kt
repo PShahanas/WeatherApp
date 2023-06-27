@@ -19,11 +19,14 @@ import com.example.weatherapps.ui.Weathercard
 import com.plcoding.weatherapp.presentation.ui.theme.DarkBlue
 import com.plcoding.weatherapp.presentation.ui.theme.DeepBlue
 import androidx.compose.runtime.compositionLocalOf
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.weatherapps.ViewModels.weatherViewModel
 
 
 @Composable
-fun WeatherScreen(viewModel: WeatherViewModel, viewModelSearch: SearchViewModel) {
+fun WeatherScreen(viewModel: WeatherViewModel, viewModelSearch: SearchViewModel, navController: NavHostController) {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -42,7 +45,8 @@ fun WeatherScreen(viewModel: WeatherViewModel, viewModelSearch: SearchViewModel)
                 Spacer(modifier = Modifier.height(5.dp))
                 Weathercard(
                     state = viewModel.state,
-                    backgroundColor = DeepBlue
+                    backgroundColor = DeepBlue, navController = navController
+
                 )
 
                 // WeatherCardNew(state = viewModel.state, backgroundColor = DeepBlue)

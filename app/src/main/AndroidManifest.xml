@@ -34,6 +34,11 @@
             android:exported="true"
              />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDOW_dICP7NpTaMIyvfo4lktiDuXobZ-6s" />
+
+
     </application>
 
 </manifest>

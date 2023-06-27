@@ -1,66 +1,23 @@
 package com.example.weatherapps.module
 
 //import com.example.weatherapps.ui.Weather.MapView
-import android.app.Application
 import android.content.Context
-import com.example.weatherapps.API.MapApi
-import com.example.weatherapps.API.MapApiImpl
-import com.example.weatherapps.ViewModels.MapViewModel
-import com.example.weatherapps.ViewModels.SearchViewModel
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.libraries.places.api.net.PlacesClient
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.node.Ref
+import com.example.weatherapps.ui.Weather.MapScreen
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.LatLng
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Named
-import javax.inject.Singleton
 
-
-
-
-@Module
-@InstallIn(SingletonComponent::class)
-object MapsModule {
-
-    @Provides
-    @Singleton
-    fun provideMapApi(context: Context, @Named("mapsApiKey") apiKey: String): MapApi {
-        return MapApiImpl(context, apiKey)
-    }
-
-    @Provides
-    @Singleton
-    @Named("mapsApiKey")
-    fun provideMapsApiKey(): String {
-        return "AIzaSyDj-LtQBmCWZBGiBrOHeGBjZsXRYdeMkfI"
-    }
-
-    @Provides
-    @Singleton
-    fun provideApplicationContext(application: Application): Context {
-        return application.applicationContext
-    }
-
-    @Provides
-    fun provideMapViewModel(mapApi: MapApi): MapViewModel{
-        return MapViewModel(mapApi)
-    }
-
-
-    @Provides
-    @Singleton
-    fun provideMapFragment(): SupportMapFragment {
-        return SupportMapFragment.newInstance()
-    }
-
-
-
-}
-
-
-
-/*
 @Module
 @InstallIn(ActivityComponent::class)
 object MapModule {
@@ -105,6 +62,4 @@ object MapModule {
         mapViewRef.value = mapView
         return mapView
     }
-}*/
-
-
+}

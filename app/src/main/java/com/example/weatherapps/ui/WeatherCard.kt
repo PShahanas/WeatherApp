@@ -66,10 +66,9 @@ fun Weathercard(
 
                 Text(text = "Canada", color = Color.White,
                 fontSize = 50.sp,
-                    //modifier = Modifier.clickable {
-                      //  navController.navigate(MainActivity.Screens.Map)
-                    //}
-                )
+                    modifier = Modifier.clickable {
+                        navController.navigate(MainActivity.Screens.Map)
+                    })
 
                 Spacer(modifier = Modifier.height(9.dp))
 
@@ -101,7 +100,7 @@ fun Weathercard(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 10.dp)
+                        .padding(start = 6.dp)
                 ) {
 
                     val pressure = ImageVector.vectorResource(id = R.drawable.ic_pressure)
@@ -151,21 +150,6 @@ fun Weathercard(
 
 
                 }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_mapsicon),
-                    contentDescription = "Maps",
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clickable {
-                               navController.navigate(MainActivity.Screens.Map)
-                        }
-                )
-
-
-
             }
 
             }

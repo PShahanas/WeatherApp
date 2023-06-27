@@ -5,18 +5,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.IBinder
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.app.ActivityCompat
-import com.example.weatherapps.API.MapApi
 import com.example.weatherapps.ViewModels.weatherViewModel
-import com.example.weatherapps.ui.Weather.rememberMapViewWithLifecycle
 import com.example.weatherapps.ui.mainActivity
 //import com.example.weatherapps.mainActivity
 //import com.example.weatherapps.ui.mainActivity
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.LatLng
-import javax.inject.Inject
 
 class LocationService : Service(){
 
@@ -24,8 +18,29 @@ class LocationService : Service(){
        var currentLatitude: Double? = null
        var currentLongitude: Double? = null
 
-   }
+       /*@JvmName("setCurrentLatitude1")
+       fun setCurrentLatitude(latitude: Double?) {
+           currentLatitude = latitude
+       }
 
+       @JvmName("getCurrentLatitude1")
+       fun getCurrentLatitude(): Double? {
+           return currentLatitude
+       }
+
+       @JvmName("setCurrentLongitude1")
+       fun setCurrentLongitude(longitude: Double?) {
+           currentLongitude = longitude
+       }
+
+       @JvmName("getCurrentLongitude1")
+       fun getCurrentLongitude(): Double? {
+           return currentLongitude
+       }*/
+
+
+
+   }
 
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var locationCallback: LocationCallback? = null
@@ -51,11 +66,6 @@ class LocationService : Service(){
 
                     currentLatitude = location.latitude
                     currentLongitude = location.longitude
-
-                   // val mapView = MapView(applicationContext)
-// obtain reference to your MapView
-                   // val updatedLatLng = LatLng(currentLatitude!!, currentLongitude!!)
-                    //mapApi.updateMarkerPosition(updatedLatLng, mapView)
 
                     mainActivity.let{
                         if (it != null) {

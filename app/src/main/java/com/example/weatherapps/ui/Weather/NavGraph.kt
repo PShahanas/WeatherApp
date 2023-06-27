@@ -9,11 +9,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.weatherapps.ViewModels.SearchViewModel
 import com.example.weatherapps.ViewModels.WeatherViewModel
 
-
-
-
-
-
 /*object Screens {
     const val Map = "map"
     const val Home = "home"

@@ -1,13 +1,12 @@
 package com.example.weatherapps.ViewModels
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.ViewModel
 import com.example.weatherapps.API.MapApi
-import com.example.weatherapps.API.MapApiImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 //import javax.inject.ViewModelInject
-import android.content.Context
 import com.example.weatherapps.Classes.Place
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -38,7 +37,7 @@ class MapViewModel @Inject constructor(val mapApi: MapApi) : ViewModel() {
                     onPlaceSelectedCallback?.invoke(selectedPlace)
 
                     // Move the marker to the selected place
-                    mapApi.moveMarkerToPlace(selectedPlace, mapView)
+                    //mapApi.moveMarkerToPlace(selectedPlace, mapView)
 
                 }
             }
@@ -56,13 +55,23 @@ class MapViewModel @Inject constructor(val mapApi: MapApi) : ViewModel() {
         mapApi.setInitialMarker(initialLatLng, mapView)
     }
 
+
+
+    /*fun moveMarker(latLng: LatLng,view: View, mapView: MapView){
+        mapApi.moveMarkerToPlace(latLng,view, mapView)
+    }*/
+
     fun updateMarkerPosition(mapView: MapView, latitude: Double, longitude: Double) {
         val updatedLatLng = LatLng(latitude, longitude)
         mapApi.updateMarkerPosition(updatedLatLng, mapView)
     }
 
-    fun getSelectedPlace(): Place? {
+    /*fun getSelectedPlace(): Place? {
         return mapApi.getSelectedPlace()
+    }*/
+
+    fun moveMarker(latLng: LatLng, mapView: MapView) {
+        mapApi.moveMarkerToPlace(latLng, mapView)
     }
 
 

@@ -51,7 +51,13 @@ import androidx.navigation.compose.composable
 import com.example.weatherapps.ViewModels.MapViewModel
 import com.example.weatherapps.ui.Weather.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.maps.MapView
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 
 var mainActivity : MainActivity? = null
@@ -63,6 +69,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: WeatherViewModel by viewModels()
     private val viewModelSearch: SearchViewModel by viewModels()
     private val mapViewModel: MapViewModel by viewModels()
+   // private val mapView: MapView
 
    // private val navController by lazy { rememberNavController() }
     private lateinit var navController: NavHostController
@@ -113,6 +120,10 @@ class MainActivity : ComponentActivity() {
 
         navController = rememberNavController()
         val mapViewModel = hiltViewModel<MapViewModel>()
+        //val lifecycleOwner = LocalLifecycleOwner.current
+        //val mapView = rememberMapViewWithLifecycle(lifecycleOwner)
+
+
 
         NavHost(navController = navController, startDestination = Screens.Home) {
             composable(Screens.Home) {

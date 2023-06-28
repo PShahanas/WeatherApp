@@ -22,6 +22,7 @@ import androidx.navigation.NavHostController
 import com.example.weatherapps.API.MapApiImpl
 import com.example.weatherapps.Classes.Place
 import com.example.weatherapps.ViewModels.MapViewModel
+import com.google.android.gms.maps.MapView
 
 /*@Composable
 fun MapScreenEntry (navController: NavHostController) {
@@ -107,6 +108,24 @@ fun MapScreenEntry(viewModel: MapViewModel,
             onPlaceSelected(place)
         }
     }
+
+    /*LaunchedEffect(Unit) {
+        mapView.getMapAsync { googleMap ->
+            googleMap.setOnMapClickListener { latLng ->
+                viewModel.moveMarker(latLng, mapView)
+            }
+        }
+    }*/
+
+    /*LaunchedEffect(Unit){
+        mapView.getMapAsync {
+            googleMap ->
+            googleMap.setOnMapClickListener { latLng ->
+                viewModel.moveMarker(latLng,view,  mapView)
+            }
+
+        }
+    }*/
 
     if (navigateUp.value) {
         navController.popBackStack()

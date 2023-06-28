@@ -66,9 +66,10 @@ fun Weathercard(
 
                 Text(text = "Canada", color = Color.White,
                 fontSize = 50.sp,
-                    modifier = Modifier.clickable {
-                        navController.navigate(MainActivity.Screens.Map)
-                    })
+                    //modifier = Modifier.clickable {
+                      //  navController.navigate(MainActivity.Screens.Map)
+                    //}
+                )
 
                 Spacer(modifier = Modifier.height(9.dp))
 
@@ -150,6 +151,21 @@ fun Weathercard(
 
 
                 }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_mapsicon),
+                    contentDescription = "Maps",
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clickable {
+                               navController.navigate(MainActivity.Screens.Map)
+                        }
+                )
+
+
+
             }
 
             }

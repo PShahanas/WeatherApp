@@ -18,6 +18,8 @@ class LocationService : Service(){
        var currentLatitude: Double? = null
        var currentLongitude: Double? = null
 
+       var isPlaceValid: Boolean = false
+
        /*@JvmName("setCurrentLatitude1")
        fun setCurrentLatitude(latitude: Double?) {
            currentLatitude = latitude
@@ -144,6 +146,29 @@ class LocationService : Service(){
     override fun onDestroy() {
         super.onDestroy()
         removeLocationUpdates()
+    }
+
+    fun isPlaceValid(): Boolean {
+        val previousLatitude = LocationService.currentLatitude
+        val previousLongitude = LocationService.currentLongitude
+        val currentLatitude = location?.latitude
+        val currentLongitude = location?.longitude
+        LocationService.currentLatitude = currentLatitude
+        LocationService.currentLongitude = currentLongitude
+
+        val change: Boolean
+
+        // Compare the current latitude with the previous latitude
+        if (previousLatitude != null && currentLatitude != null && previousLongitude != null && currentLongitude != null ) {
+
+             change = previousLatitude != currentLatitude && previousLongitude!= currentLongitude
+
+            return previousLatitude != currentLatitude && previousLongitude!= currentLongitude
+        }
+
+        change = previousLatitude != currentLatitude && previousLongitude!= currentLongitude
+
+        return change
     }
 
 
